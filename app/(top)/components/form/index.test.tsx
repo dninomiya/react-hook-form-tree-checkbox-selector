@@ -14,6 +14,13 @@ describe('ExampleForm', () => {
       name: '名前',
     });
     fireEvent.change(input, { target: { value: 'test' } });
-    expect(input.value).toBe('test');
+    expect(input).toHaveValue('test');
+  });
+
+  test('未入力時に送信できないこと', () => {
+    const button = screen.getByRole<HTMLButtonElement>('button', {
+      name: '送信',
+    });
+    expect(button).toBeDisabled();
   });
 });

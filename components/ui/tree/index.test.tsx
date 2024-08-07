@@ -46,7 +46,7 @@ describe('Tree', () => {
   test('アイテムの選択が反映されること', () => {
     const checkbox = screen.getByRole('checkbox', { name: 'アイテム A' });
     fireEvent.click(checkbox);
-    expect(checkbox.ariaChecked).toBe('true');
+    expect(checkbox).toBeChecked();
   });
 
   test('全選択が機能すること', () => {
@@ -56,7 +56,7 @@ describe('Tree', () => {
 
     const allCheckbox = screen.getAllByRole('checkbox');
     allCheckbox.forEach((checkbox) => {
-      expect(checkbox.ariaChecked).toBe('true');
+      expect(checkbox).toBeChecked();
     });
   });
 
@@ -66,6 +66,6 @@ describe('Tree', () => {
     expect(checkbox.ariaChecked).toBe('true');
 
     const allCheckbox = screen.getByRole('checkbox', { name: 'すべて' });
-    expect(allCheckbox.ariaChecked).toBe('mixed');
+    expect(allCheckbox).toBePartiallyChecked();
   });
 });
