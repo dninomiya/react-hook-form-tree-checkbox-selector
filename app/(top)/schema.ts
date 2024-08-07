@@ -1,3 +1,4 @@
+import { TreeItemProps } from '@/components/ui/tree';
 import { z } from 'zod';
 
 export const schema = z.object({
@@ -7,7 +8,7 @@ export const schema = z.object({
 
 export type FormData = z.infer<typeof schema>;
 
-export const CATEGORIES = [
+export const CATEGORIES: TreeItemProps[] = [
   {
     label: 'すべて',
     items: [

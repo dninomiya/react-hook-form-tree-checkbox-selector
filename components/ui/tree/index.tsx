@@ -24,7 +24,7 @@ const TreeContext = createContext<FormFieldContextValue>(
   {} as FormFieldContextValue
 );
 
-type TreeItemProps = {
+export type TreeItemProps = {
   label: string;
   id?: string;
   items?: TreeItemProps[];
