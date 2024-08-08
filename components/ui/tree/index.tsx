@@ -1,10 +1,17 @@
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
 } from '@/components/ui/form';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { createContext, useContext, useMemo } from 'react';
 import {
   FieldPath,
@@ -37,6 +44,7 @@ function TreeItem({ label, id, items }: TreeItemProps) {
     control,
     name,
   });
+  const hasItems = Boolean(items?.length);
 
   const handleCheck = (checked: boolean) => {
     if (items?.length) {
@@ -78,28 +86,54 @@ function TreeItem({ label, id, items }: TreeItemProps) {
 
   return (
     <div>
-      <FormField
-        control={control}
-        name={name}
-        render={() => (
-          <FormItem className="flex relative flex-row items-start space-x-3 space-y-0 rounded-md p-2 hover:bg-accent">
-            <FormControl>
-              <Checkbox checked={checked} onCheckedChange={handleCheck} />
-            </FormControl>
-            <div className="space-y-1 leading-none">
-              <FormLabel>
-                {label}
-                <span className="absolute inset-0"></span>
-              </FormLabel>
-            </div>
-          </FormItem>
+      <Collapsible defaultOpen>
+        <div className="flex items-center">
+          {hasItems ? (
+            <CollapsibleTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8 group *:hidden"
+              >
+                <ChevronDown className="size-4 group-data-[state=closed]:block" />
+                <ChevronUp className="size-4 group-data-[state=open]:block" />
+                <span className="sr-only group-data-[state=open]:block">
+                  閉じる
+                </span>
+                <span className="sr-only group-data-[state=closed]:block">
+                  開く
+                </span>
+              </Button>
+            </CollapsibleTrigger>
+          ) : (
+            <div className="size-8" />
+          )}
+          <FormField
+            control={control}
+            name={name}
+            render={() => (
+              <FormItem className="flex flex-1 relative flex-row items-start space-x-3 space-y-0 rounded-md p-2">
+                <FormControl>
+                  <Checkbox checked={checked} onCheckedChange={handleCheck} />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>
+                    {label}
+                    <span className="absolute inset-0"></span>
+                  </FormLabel>
+                </div>
+              </FormItem>
+            )}
+          />
+        </div>
+        {hasItems && (
+          <CollapsibleContent className="pl-6">
+            {items?.map((item, index) => (
+              <TreeItem key={index} {...item} />
+            ))}
+          </CollapsibleContent>
         )}
-      />
-      <div className="pl-6">
-        {items?.map((item, index) => (
-          <TreeItem key={index} {...item} />
-        ))}
-      </div>
+      </Collapsible>
     </div>
   );
 }

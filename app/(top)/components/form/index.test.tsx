@@ -46,4 +46,26 @@ describe('ExampleForm', () => {
       expect(button).toBeEnabled();
     });
   });
+
+  describe('フォームの値', () => {
+    test('フォームの値が表示されること', async () => {
+      const input = screen.getByRole('textbox', {
+        name: '名前',
+      });
+
+      await act(async () => {
+        fireEvent.change(input, { target: { value: 'test' } });
+      });
+
+      const button = screen.getByRole('button', {
+        name: '送信',
+      });
+
+      await act(async () => {
+        fireEvent.click(button);
+      });
+
+      expect(screen.getByText(/"name": "test"/)).toBeInTheDocument();
+    });
+  });
 });
