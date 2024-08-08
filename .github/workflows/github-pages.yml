@@ -49,6 +49,8 @@ jobs:
           static_site_generator: next
       - name: Install dependencies
         run: pnpm install
+      - name: Test
+        run: pnpm test
       - name: Build with Next.js
         run: pnpm build
         env:
