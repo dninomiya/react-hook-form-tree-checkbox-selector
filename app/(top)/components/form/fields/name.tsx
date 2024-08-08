@@ -1,4 +1,4 @@
-import { FormData } from '@/app/settings/schema';
+import { FormData } from '@/app/(top)/schema';
 import {
   FormControl,
   FormField,
