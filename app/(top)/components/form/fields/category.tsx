@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 export default function CategoryField() {
-  const tree = useMemo(() => generateRandomTree(100), []);
+  const tree = useMemo(() => generateRandomTree(10), []);
   const { control } = useFormContext<FormData>();
 
   return (
