@@ -36,8 +36,10 @@ export default function ExampleForm() {
           <Button disabled={isSubmitting || !isValid}>送信</Button>
         </form>
       </Form>
-      <div className="whitespace-pre-wrap text-sm border bg-muted rounded-lg p-6">
-        {JSON.stringify(watch(), null, 2)}
+      <div>
+        <div className="whitespace-pre-wrap text-sm border bg-muted rounded-lg p-6">
+          {JSON.stringify(watch(), null, 2)}
+        </div>
       </div>
     </div>
   );
