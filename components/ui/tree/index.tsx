@@ -14,10 +14,10 @@ import {
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { createContext, useContext, useMemo } from 'react';
 import {
+  Control,
   FieldPath,
   FieldValues,
   useController,
-  useFormContext,
 } from 'react-hook-form';
 
 type FormFieldContextValue<
@@ -25,6 +25,8 @@ type FormFieldContextValue<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = {
   name: TName;
+  control: Control<TFieldValues>;
+  defaultOpen?: boolean;
 };
 
 const TreeContext = createContext<FormFieldContextValue>(
@@ -38,8 +40,7 @@ export type TreeItemProps = {
 };
 
 function TreeItem({ label, id, items }: TreeItemProps) {
-  const { name } = useContext(TreeContext);
-  const { control } = useFormContext();
+  const { name, defaultOpen, control } = useContext(TreeContext);
   const { field } = useController({
     control,
     name,
@@ -86,13 +87,14 @@ function TreeItem({ label, id, items }: TreeItemProps) {
 
   return (
     <div>
-      <Collapsible defaultOpen>
+      <Collapsible defaultOpen={defaultOpen}>
         <div className="flex items-center">
           {hasItems ? (
             <CollapsibleTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon"
+                aria-label={`${label}を開閉`}
                 className="size-8 group *:hidden"
               >
                 <ChevronDown className="size-4 group-data-[state=closed]:block" />
@@ -141,11 +143,23 @@ function TreeItem({ label, id, items }: TreeItemProps) {
 export default function Tree<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
->({ tree, name }: { tree: TreeItemProps[]; name: TName }) {
+>({
+  tree,
+  name,
+  control,
+  defaultOpen,
+}: {
+  tree: TreeItemProps[];
+  name: TName;
+  control: Control<TFieldValues>;
+  defaultOpen?: boolean;
+}) {
   return (
     <TreeContext.Provider
       value={{
         name,
+        control: control as Control<FieldValues>,
+        defaultOpen,
       }}
     >
       {tree.map((item, index) => (
